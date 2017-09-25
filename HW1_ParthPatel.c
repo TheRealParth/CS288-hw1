@@ -48,6 +48,9 @@ void printCells(char *s) {
     
 }
 
+void printEmptyCell() {
+	printf("      |");
+}
 
 
 int main(int argc, char *argv[]) {
@@ -76,7 +79,7 @@ int main(int argc, char *argv[]) {
 	for (i = 0; i < argc; ++i) {
 
 		printLeftHex(*argv[i]);
-		temp = itoa(*((int *) argv[i]), argv[i], 16);
+		itoa(*((int *) argv[i]), temp, 16);
 		printCells(temp);
 		printf(" argv+");
 		printf("%i\n", i);	
@@ -84,23 +87,35 @@ int main(int argc, char *argv[]) {
 	}
 
 	//PRINT CHARACTERS
-	i = 0;
-	while (i < argc) {
-		printLeftHex(*argv[i]);
-    	printf("%3s", argv[i]);
-    	printf("   |");
-		i++;
-		printf("%3s", argv[i]);
-    	printf("   |");
-		i++;
-		printf("%3s", argv[i]);
-    	printf("   |");
-		i++;
-		printf("%3s", argv[i]);
-    	printf("   |");
-		i++;
-		printf("\n");
-		printDashedLine();
+	int j = 0;
+	for (i = 0; i < argc; ++i) {
+		// if(!argv[i]) {
+		// 	continue;
+		// }
+		while(1) {
+			if(((j-1)%8 == 0) && (j>0)) {
+				printLeftHex((int)argv[i][j]);
+			}
+			if(!argv[i][j]) {
+				while((j%8)){
+					printEmptyCell();
+					j++;
+				}
+				// printf("%c",'\n');
+			}
+	
+			printf("%3c", argv[i][j]);
+			printf("   |");
+			if((j%8 == 0)) {
+				printf("%s", "\n");
+				printDashedLine();
+			}
+			j++;
+			if(!argv[i][j]) break;
+		}
+		j=0;
+		
+		
 	}
 
 	printDashedLine();
